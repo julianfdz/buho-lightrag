@@ -1,14 +1,11 @@
 services:
-  lightrag:
-    container_name: lightrag
-    image: ghcr.io/hkuds/lightrag:latest
+  buho-lightrag:
+    container_name: buho-lightrag
     build:
       context: .
       dockerfile: Dockerfile
-      tags:
-        - ghcr.io/hkuds/lightrag:latest
     ports:
-      - "${PORT:-9621}:9621"
+      - 9621:9621
     volumes:
       - ./data/rag_storage:/app/data/rag_storage
       - ./data/inputs:/app/data/inputs
@@ -19,3 +16,10 @@ services:
     restart: unless-stopped
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+    networks:
+      - intrabuhonet
+
+networks:
+  intrabuhonet:
+    external: true
